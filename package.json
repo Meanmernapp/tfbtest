@@ -1,0 +1,21 @@
+{
+  "name": "russworld",
+  "version": "1.0.0",
+  "description": "Authentication with passport local strategy. (Mongo, Express, React (with Vite) , NodeJS, Tailwind)",
+  "main": "index.js",
+  "scripts": {
+    "server": "npm start --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "passport-jwt": "^4.0.1"
+  }
+}

@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      #- $(aws ecr get-login --no-include-email --region ap-south-1)
+     # - aws ecr get-login-password --region me-central-1 | docker login --username AWS --password-stdin XXXXXXXXXXXX.dkr.ecr.ap-south-1.amazonaws.com
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 241056507775.dkr.ecr.us-east-1.amazonaws.com
+  build:
+    commands:
+      - "echo Build started on `date`"
+      - "echo Building the Docker image..."
+      - "docker build -t russworld-backend ."
+      - "docker tag russworld-backend:latest 241056507775.dkr.ecr.us-east-1.amazonaws.com/russworld-backend:latest"
+     # - "docker tag html-nginx:latest XXXXXXXXXXXX.dkr.ecr.ap-south-1.amazonaws.com/html-nginx:latest"
+  post_build:
+    commands:
+      - "echo Build completed on `date`"
+      - "echo Pushing the Docker image..."
+      - "docker push 241056507775.dkr.ecr.us-east-1.amazonaws.com/russworld-backend:latest"
+      #- "docker push XXXXXXXXXXXX.dkr.ecr.ap-south-1.amazonaws.com/html-nginx:latest"
+      - printf '[{"name":"russworld-backend","imageUri":"%s"}]' 241056507775.dkr.ecr.us-east-1.amazonaws.com/russworld-backend:latest > imagedefinitions.json
+      #- printf '[{"name":"dev-web-frontend-autoadvisers","imageUri":"%s"}]' XXXXXXXXXXXX.dkr.ecr.ap-south-1.amazonaws.com/html-nginx:latest > imagedefinitions.json
+artifacts:
+  files: '**/*'

@@ -1,0 +1,24 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo "Pre-build phase started"
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 241056507775.dkr.ecr.us-east-1.amazonaws.com
+  build:
+    commands:
+      - "echo Build started on `date`"
+      - "echo Building the Docker image..."
+      - "docker build -t russworld-frontend ."
+      - "docker tag russworld-frontend:latest 241056507775.dkr.ecr.us-east-1.amazonaws.com/russworld-frontend:latest"
+  post_build:
+    commands:
+      - "echo Post-build phase started"
+      - "echo Build completed on `date`"
+      - "echo Pushing the Docker image..."
+      - "docker push 241056507775.dkr.ecr.us-east-1.amazonaws.com/russworld-frontend:latest"
+      - "echo Image pushed successfully"
+      - printf '[{"name":"russworld-frontend","imageUri":"%s"}]' 241056507775.dkr.ecr.us-east-1.amazonaws.com/russworld-frontend:latest > imagedefinitions.json
+
+artifacts:
+  files: '**/*'
